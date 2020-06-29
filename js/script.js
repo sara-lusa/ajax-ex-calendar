@@ -5,50 +5,65 @@
 // concluderà a dicembre 2018 (unici dati disponibili sull’API).
 
 $(document).ready(function() {
-  // Aggiungi variabile per stabilire il mese
+  // Variabile per cambiare il mese
   var addMonth = 0;
 
+  // Variabile che stabilisce la data inziale
   var currentMonth = '2018-01-01';
+  // Variabile che stabilisce la data corrente
   var currentMonthMoment = moment(currentMonth).add(addMonth, 'months').format('MMMM');
-  console.log(currentMonthMoment);
 
+  // HANDLEBARS per completare il mese
+  var templateMonth = $('#month-template').html();
+  var templateMonthToCompile = Handlebars.compile(templateMonth);
+
+  var contextMonth = {month: currentMonthMoment};
+  var templateMonthCompiled = templateMonthToCompile(contextMonth);
+  $('.calendario').prepend(templateMonthCompiled);
+
+  // Variabile che definisce la lunghezza del mese corrente
   var lengthMonth = moment(currentMonth).add(addMonth, 'months').daysInMonth();
-  console.log(lengthMonth);
 
-  var source = $('#days-template').html();
-  var template = Handlebars.compile(source);
+  // HANDLBARS per completare la lista
+  var templateDays = $('#days-template').html();
+  var templateDaysToCompile = Handlebars.compile(templateDays);
 
+  // Ciclo for per riempire e incollare il template copiato
+  // Con giorno e mese
   for (var i = 0; i < lengthMonth; i++) {
-    var context = {
+    var contextDays = {
       day: (i + 1) + ' ' + currentMonthMoment,
     };
-    var html = template(context);
+    var templateDaysCompiled = templateDaysToCompile(contextDays);
 
-    $('.calendario .days').append(html);
+    $('.calendario .days').append(templateDaysCompiled);
   }
+
+  // Chiamata Ajax per scrivere la festività
   $.ajax(
     {
       url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
-      method: 'GET',
+      method: "GET",
       // Aggiungi variabile per stabilire il mese
+      data: { month: 'addMonth' },
       success: function(data) {
-        // var currentMonthDays = moment(currentDate).format('MMMM');
-        // console.log(currentMonthDays);
 
-        for (var i = 0; i < data.response.length; i++) {
-          var date = moment(data.response[i].date).format('d MMMM');
-
+        if (data.response.length !== 0) {
           var source = $('#days-template').html();
           var template = Handlebars.compile(source);
 
-          var context = {
-            // day: (i + 1) + ' ' + currentMonthMoment,
-            day: date,
-            festivity: data.response[i].name,
-          };
-          var html = template(context);
+          for (var i = 0; i < data.response.length; i++) {
+            var date = moment(data.response[i].date).format('d MMMM');
 
-          $('.calendario .days').append(html);
+            var context = {
+              // day: (i + 1) + ' ' + currentMonthMoment,
+              // day: date,
+              festivity: data.response[i].name,
+            };
+            var html = template(context);
+
+            $('.calendario .days').append(html);
+          }
         }
       },
       error: function() {
