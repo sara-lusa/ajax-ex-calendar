@@ -45,24 +45,22 @@ $(document).ready(function() {
       url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
       method: "GET",
       // Aggiungi variabile per stabilire il mese
-      data: { month: 'addMonth' },
+      // data: {month: 'addMonth'},
       success: function(data) {
 
         if (data.response.length !== 0) {
-          var source = $('#days-template').html();
-          var template = Handlebars.compile(source);
-
           for (var i = 0; i < data.response.length; i++) {
             var date = moment(data.response[i].date).format('d MMMM');
+            console.log(date);
+            $('.days li').each(function() {
 
-            var context = {
-              // day: (i + 1) + ' ' + currentMonthMoment,
-              // day: date,
-              festivity: data.response[i].name,
-            };
-            var html = template(context);
-
-            $('.calendario .days').append(html);
+              console.log($(this).text());
+              console.log(date);
+              if($(this).text() === date) {
+                // console.log('sono dentro');
+                $(this).append(' - ' + data.response[i].name);
+              }
+            });
           }
         }
       },
