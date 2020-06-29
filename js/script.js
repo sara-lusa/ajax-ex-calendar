@@ -13,6 +13,22 @@ $(document).ready(function() {
   // Variabile che stabilisce la data corrente
   var currentMonthMoment = moment(currentMonth).add(addMonth, 'months').format('MMMM');
 
+  $('.precedente').click(function() {
+    if(addMonth > 0 || addMonth <= 11) {
+      addMonth--;
+
+      return addMonth;
+    }
+  });
+
+  $('.successivo').click(function() {
+    if(addMonth >= 0 || addMonth < 11) {
+      addMonth++;
+
+      return addMonth;
+    }
+  });
+
   // HANDLEBARS per completare il mese
   var templateMonth = $('#month-template').html();
   var templateMonthToCompile = Handlebars.compile(templateMonth);
@@ -51,13 +67,9 @@ $(document).ready(function() {
         if (data.response.length !== 0) {
           for (var i = 0; i < data.response.length; i++) {
             var date = moment(data.response[i].date).format('d MMMM');
-            console.log(date);
             $('.days li').each(function() {
 
-              console.log($(this).text());
-              console.log(date);
               if($(this).text() === date) {
-                // console.log('sono dentro');
                 $(this).append(' - ' + data.response[i].name);
               }
             });
