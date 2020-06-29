@@ -5,27 +5,24 @@
 // concluderà a dicembre 2018 (unici dati disponibili sull’API).
 
 $(document).ready(function() {
-  // Variabile per cambiare il mese
-  var addMonth = 0;
-
   // Variabile che stabilisce la data inziale
-  var currentMonth = '2018-01-01';
+  var currentMonth = $('.days').attr('data-month');
+  var currentMonthNumber = moment(currentMonth).month();
+
   // Variabile che stabilisce la data corrente
-  var currentMonthMoment = moment(currentMonth).add(addMonth, 'months').format('MMMM');
+  var currentMonthMoment = moment(currentMonth).format('MMMM');
 
   $('.precedente').click(function() {
-    if(addMonth > 0 || addMonth <= 11) {
-      addMonth--;
-
-      return addMonth;
+    if(currentMonthNumber > 0 || currentMonthNumber <= 11) {
+      var preMonth = moment(currentMonth).subtract(1, 'months');
+      $('.days').attr("data-month", preMonth.format('YYYY-MM-DD'));
     }
   });
 
   $('.successivo').click(function() {
-    if(addMonth >= 0 || addMonth < 11) {
-      addMonth++;
-
-      return addMonth;
+    if(currentMonthNumber >= 0 || addcurrentMonthNumberMonth < 11) {
+      var succMonth = moment(currentMonth).add(1, 'months');
+      $('.days').attr("data-month", succMonth.format('YYYY-MM-DD'));
     }
   });
 
@@ -38,7 +35,7 @@ $(document).ready(function() {
   $('.calendario').prepend(templateMonthCompiled);
 
   // Variabile che definisce la lunghezza del mese corrente
-  var lengthMonth = moment(currentMonth).add(addMonth, 'months').daysInMonth();
+  var lengthMonth = moment(currentMonth).daysInMonth();
 
   // HANDLBARS per completare la lista
   var templateDays = $('#days-template').html();
@@ -61,7 +58,7 @@ $(document).ready(function() {
       url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
       method: "GET",
       // Aggiungi variabile per stabilire il mese
-      // data: {month: 'addMonth'},
+      data: {month: currentMonthNumber },
       success: function(data) {
 
         if (data.response.length !== 0) {
