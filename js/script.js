@@ -88,18 +88,24 @@ $(document).ready(function() {
         data: {month: currentMonthNumber },
         success: function(data) {
 
-          if (data.response.length !== 0) {
+          // if (data.response.length !== 0) {
             for (var i = 0; i < data.response.length; i++) {
-              var date = moment(data.response[i].date).format('d MMMM');
+              var date = moment(data.response[i].date).format('D MMMM');
+              console.log(data.response[i].date);
+              console.log(date);
+
               $('.days li').each(function() {
+                // console.log(date);
 
                 if($(this).text() === date) {
+                  console.log('nel if', date);
+
                   $(this).append(' - ' + data.response[i].name);
                   $(this).addClass('festivity');
                 }
               });
             }
-          }
+          // }
         },
         error: function() {
           alert('Si è verificato un errore!');
