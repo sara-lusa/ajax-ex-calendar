@@ -12,7 +12,9 @@
   <body>
 
     <div class="container">
+      <!-- Calendario -->
       <div class="calendario">
+        <!-- Select-month -->
         <select class="select-month" name="">
           <option value="2018-01-01">January</option>
           <option value="2018-02-01">February</option>
@@ -27,7 +29,11 @@
           <option value="2018-11-01">November</option>
           <option value="2018-12-01">December</option>
         </select>
+
+        <!-- Current Month -->
         <h2 class="month"></h2>
+
+        <!-- Buttons direzionali -->
         <div class="buttons">
           <button class="precedente"><< Precedente</button>
           <button class="successivo">Successivo >></button>
@@ -40,7 +46,7 @@
       </div>
     </div>
 
-
+  <!-- Template per i div di calendario -->
     <script id="days-template" type="text/x-handlebars-template">
       <!-- <li>{{day}}</li> -->
       <div><span>{{day}}</span></div>

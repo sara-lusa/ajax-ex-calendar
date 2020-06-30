@@ -7,49 +7,53 @@
 $(document).ready(function() {
   // Variabile che stabilisce la data inziale
   var currentDate = moment('2018-01-01');
-  // var currentDateNumber = moment(currentDate).month();
-
-  // Variabile che stabilisce la data corrente
-  // var currentDateMoment = moment(currentDate).format('MMMM');
 
   printMonth(currentDate);
   printFestivity(currentDate);
 
+  // Evento alla selezione di una option di .select-month
   $('.select-month').change(function() {
     var valOption = $(this).val();
     var valOptionMoment = moment(valOption)
-    console.log(valOption);
 
     printMonth(valOptionMoment);
     printFestivity(valOptionMoment);
   });
 
+  // Evento al click del button.precedente
   $('.precedente').click(function() {
     var currentMonth = moment($('.days').attr('data-month'));
     var currentMonthMoment = currentMonth.subtract(1, 'months');
 
+    // Se il mese corrente è 2018, chiamare le funzioni
     if(currentMonth.year() === 2018) {
       var prevMonth = currentMonthMoment.format('YYYY-MM-DD');
       var prevMonthMoment = moment(prevMonth);
 
       printMonth(prevMonthMoment);
       printFestivity(prevMonthMoment);
-    } else {
+    }
+    // Se no, blocca l'evento con un alert
+    else {
       alert('Mi dispiace puoi navigare solo nel 2018');
     }
   });
 
+  // Evento al click del button.successivo
   $('.successivo').click(function() {
     var currentMonth = moment($('.days').attr('data-month'));
     var currentMonthMoment = currentMonth.add(1, 'months');
 
+    // Se il mese corrente è 2018, chiamare le funzioni
     if(currentMonth.year() === 2018) {
       var succMonth = currentMonthMoment.format('YYYY-MM-DD');
       var succMonthMoment = moment(succMonth);
 
       printMonth(succMonthMoment);
       printFestivity(succMonthMoment);
-    } else {
+    }
+    // Se no, blocca l'evento con un alert
+    else {
       alert('Mi dispiace puoi navigare solo nel 2018');
     }
   });
@@ -57,7 +61,11 @@ $(document).ready(function() {
 
 
   // FUNCTIONS
-
+  // Funzione che serve a stampare il mese selezionato
+  // dalla variabile inserita
+  // argomento:
+  //   --> oggetto moment
+  // return: nulla
   function printMonth(currentDate) {
 
     // HANDLEBARS per completare il mese
@@ -88,7 +96,11 @@ $(document).ready(function() {
     }
   }
 
-
+  // Funzione che serve a stampare le festività del mese selezionato
+  // dalla variabile inserita
+  // argomento:
+  //   --> oggetto moment
+  // return: nulla
   function printFestivity(currentDate) {
     // Chiamata Ajax per scrivere la festività
     $.ajax(
