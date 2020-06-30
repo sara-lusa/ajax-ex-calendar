@@ -20,7 +20,7 @@ $(document).ready(function() {
   });
 
   $('.successivo').click(function() {
-    if(currentMonthNumber >= 0 || addcurrentMonthNumberMonth < 11) {
+    if(currentMonthNumber >= 0 || currentMonthNumber < 11) {
       var succMonth = moment(currentMonth).add(1, 'months');
       $('.days').attr("data-month", succMonth.format('YYYY-MM-DD'));
     }
@@ -58,7 +58,7 @@ $(document).ready(function() {
       url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
       method: "GET",
       // Aggiungi variabile per stabilire il mese
-      data: {month: currentMonthNumber },
+      data: {month: "0" },
       success: function(data) {
 
         if (data.response.length !== 0) {
@@ -68,6 +68,7 @@ $(document).ready(function() {
 
               if($(this).text() === date) {
                 $(this).append(' - ' + data.response[i].name);
+                $(this).addClass('festivity');
               }
             });
           }
