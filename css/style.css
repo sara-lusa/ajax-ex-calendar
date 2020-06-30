@@ -18,7 +18,7 @@ body {
 .calendario {
   width: 50%;
   height: 90%;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   margin: 0 auto;
   background-color: white;
   padding: 40px;
@@ -28,12 +28,30 @@ h2 {
   text-align: center;
 }
 
-p {
+.buttons {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
+.days {
+  width: 90%;
+  height: 90%;
+  background-color: lightyellow;
+  margin: 0 auto;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid black;
+}
+
+.days > div {
+  padding: 10px 3px 10px 5px;
+  width: calc(100% / 7);
+  height: calc(100% / 5);
+  border: 0.5px solid lightgrey;
+  font-size: 15px;
+}
 
 .festivity {
   font-weight: bold;

@@ -13,23 +13,37 @@
 
     <div class="container">
       <div class="calendario">
-        <p><span class="precedente"> << Precedente</span>
-        <span class="successivo">Successivo >></span></p>
+        <select class="select-month" name="">
+          <option value="January">January</option>
+          <option value="February">February</option>
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
+        </select>
+        <h2 class="month"></h2>
+        <div class="buttons">
+          <button class="precedente"><< Precedente</button>
+          <button class="successivo">Successivo >></button>
+        </div>
 
-        <ul data-month="2018-01-01" class="days">
+        <!-- <ul data-month="2018-01-01" class="days"></ul> -->
+        <div data-month="2018-01-01" class="days">
 
-        </ul>
+        </div>
       </div>
     </div>
 
 
-    <script id="month-template" type="text/x-handlebars-template">
-      <div class="month">
-        <h2>{{month}}</h2>
-    </script>
-
     <script id="days-template" type="text/x-handlebars-template">
-      <li>{{day}}</li>
+      <!-- <li>{{day}}</li> -->
+      <div><span>{{day}}</span></div>
     </script>
 
 

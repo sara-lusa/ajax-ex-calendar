@@ -6,36 +6,42 @@
 
 $(document).ready(function() {
   // Variabile che stabilisce la data inziale
-  var currentDate = '2018-01-01';
-  var currentDateNumber = moment(currentDate).month();
+  var currentDate = moment('2018-01-01');
+  // var currentDateNumber = moment(currentDate).month();
 
   // Variabile che stabilisce la data corrente
-  var currentDateMoment = moment(currentDate).format('MMMM');
+  // var currentDateMoment = moment(currentDate).format('MMMM');
 
-  printMonth(currentDate, currentDateMoment);
-  printFestivity(currentDateNumber);
+  printMonth(currentDate);
+  printFestivity(currentDate);
 
   $('.precedente').click(function() {
-    if(currentDateNumber > 0 || currentDateNumber <= 11) {
-      var currentMonth = $('.days').attr('data-month');
-      var currentMonthMoment = moment(currentMonth).subtract(1, 'months');
-      // $('.days').attr("data-month", prevMonth.format('YYYY-MM-DD'));
-      var prevMonth = currentMonthMoment.format('YYYY-MM-DD');
+    var currentMonth = moment($('.days').attr('data-month'));
+    var currentMonthMoment = currentMonth.subtract(1, 'months');
 
-      printMonth(prevMonth, currentMonthMoment.format('MMMM'));
-      printFestivity(currentMonthMoment.month());
+    if(currentMonth.year() === 2018) {
+      var prevMonth = currentMonthMoment.format('YYYY-MM-DD');
+      var prevMonthMoment = moment(prevMonth);
+
+      printMonth(prevMonthMoment);
+      printFestivity(prevMonthMoment);
+    } else {
+      alert('Mi dispiace puoi navigare solo nel 2018');
     }
   });
 
   $('.successivo').click(function() {
-    if(currentDateNumber >= 0 || currentDateNumber < 11) {
-      var currentMonth = $('.days').attr('data-month');
-      var currentMonthMoment = moment(currentMonth).add(1, 'months');
-      // $('.days').attr("data-month", succMonth.format('YYYY-MM-DD'));
-      var succMonth = currentMonthMoment.format('YYYY-MM-DD');
+    var currentMonth = moment($('.days').attr('data-month'));
+    var currentMonthMoment = currentMonth.add(1, 'months');
 
-      printMonth(succMonth, currentMonthMoment.format('MMMM'));
-      printFestivity(currentMonthMoment.month());
+    if(currentMonth.year() === 2018) {
+      var succMonth = currentMonthMoment.format('YYYY-MM-DD');
+      var succMonthMoment = moment(succMonth);
+
+      printMonth(succMonthMoment);
+      printFestivity(succMonthMoment);
+    } else {
+      alert('Mi dispiace puoi navigare solo nel 2018');
     }
   });
 
@@ -43,25 +49,21 @@ $(document).ready(function() {
 
   // FUNCTIONS
 
-  function printMonth(currentDate, currentDateMoment) {
-    $('h2').html('');
-    $('.days').html('');
+  function printMonth(currentDate) {
 
     // HANDLEBARS per completare il mese
-    var templateMonth = $('#month-template').html();
-    var templateMonthToCompile = Handlebars.compile(templateMonth);
+    $('h2.month').text('');
+    $('.month').text(currentDate.format('MMMM'));
 
-    var contextMonth = {month: currentDateMoment};
-    var templateMonthCompiled = templateMonthToCompile(contextMonth);
-    $('.calendario').prepend(templateMonthCompiled);
-
-    var currentDateFormat = moment(currentDate).format('YYYY-MM-DD');
+    var currentDateFormat = currentDate.format('YYYY-MM-DD');
     $('.days').attr('data-month', currentDateFormat)
 
     // Variabile che definisce la lunghezza del mese corrente
-    var lengthMonth = moment(currentDate).daysInMonth();
+    var lengthMonth = currentDate.daysInMonth();
 
     // HANDLBARS per completare la lista
+    $('.days').html('');
+
     var templateDays = $('#days-template').html();
     var templateDaysToCompile = Handlebars.compile(templateDays);
 
@@ -69,7 +71,7 @@ $(document).ready(function() {
     // Con giorno e mese
     for (var i = 1; i <= lengthMonth; i++) {
       var contextDays = {
-        day: i + ' ' + currentDateMoment,
+        day: i + ' ' + currentDate.format('MMMM'),
       };
       var templateDaysCompiled = templateDaysToCompile(contextDays);
 
@@ -78,28 +80,23 @@ $(document).ready(function() {
   }
 
 
-  function printFestivity(currentMonthNumber) {
+  function printFestivity(currentDate) {
     // Chiamata Ajax per scrivere la festività
     $.ajax(
       {
         url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
         method: "GET",
         // Aggiungi variabile per stabilire il mese
-        data: {month: currentMonthNumber },
+        data: {month: currentDate.month() },
         success: function(data) {
 
           // if (data.response.length !== 0) {
             for (var i = 0; i < data.response.length; i++) {
               var date = moment(data.response[i].date).format('D MMMM');
-              console.log(data.response[i].date);
-              console.log(date);
 
               $('.days li').each(function() {
-                // console.log(date);
 
                 if($(this).text() === date) {
-                  console.log('nel if', date);
-
                   $(this).append(' - ' + data.response[i].name);
                   $(this).addClass('festivity');
                 }
