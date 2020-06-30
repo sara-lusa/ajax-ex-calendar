@@ -94,10 +94,10 @@ $(document).ready(function() {
             for (var i = 0; i < data.response.length; i++) {
               var date = moment(data.response[i].date).format('D MMMM');
 
-              $('.days li').each(function() {
+              $('.days div').each(function() {
 
                 if($(this).text() === date) {
-                  $(this).append(' - ' + data.response[i].name);
+                  $(this).append(' ' + data.response[i].name);
                   $(this).addClass('festivity');
                 }
               });
