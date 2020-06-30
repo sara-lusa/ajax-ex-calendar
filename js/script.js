@@ -15,6 +15,15 @@ $(document).ready(function() {
   printMonth(currentDate);
   printFestivity(currentDate);
 
+  $('.select-month').change(function() {
+    var valOption = $(this).val();
+    var valOptionMoment = moment(valOption)
+    console.log(valOption);
+
+    printMonth(valOptionMoment);
+    printFestivity(valOptionMoment);
+  });
+
   $('.precedente').click(function() {
     var currentMonth = moment($('.days').attr('data-month'));
     var currentMonthMoment = currentMonth.subtract(1, 'months');
